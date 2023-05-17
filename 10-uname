@@ -1,0 +1,5 @@
+#!/bin/sh
+uname -snrvm
+
+#/usr/bin/env figlet "$(hostname)"
+/usr/bin/env figlet "SKYNET"

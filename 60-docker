@@ -25,6 +25,6 @@ for i in "${!containers[@]}"; do
 done
 out+="\n"
 
-printf "\ndocker status:\n"
+printf "\nDocker status:\n"
 printf "$out" | column -ts $',' | sed -e 's/^/  /'
 printf "\n"

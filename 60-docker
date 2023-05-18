@@ -27,3 +27,4 @@ out+="\n"
 
 printf "\ndocker status:\n"
 printf "$out" | column -ts $',' | sed -e 's/^/  /'
+printf "\n"

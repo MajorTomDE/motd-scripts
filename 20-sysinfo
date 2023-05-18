@@ -24,7 +24,8 @@ Hostname   $W`hostname` : $W`hostname -I`
 
 Uptime     $W`uptime -p`
 
-Updates    $W`aptitude search "~U" | wc -l`
+Updates    $W`apt-get -q -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | /bin/grep  ^Inst | wc -l`
+
 
 "
 
@@ -35,4 +36,5 @@ Updates    $W`aptitude search "~U" | wc -l`
 #
 #$W  CPU.........: $W$PROCESSOR_NAME ($G$PROCESSOR_COUNT$W vCPU)
 #$W  Memory......: $G$USED$W used, $G$AVAIL$W avail, $G$TOTAL$W total$W"
+#Updates    $W`aptitude search "~U" | wc -l`
 #"

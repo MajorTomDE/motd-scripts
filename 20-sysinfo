@@ -20,7 +20,7 @@ echo -e "
 Distro     `cat /etc/*release | grep "PRETTY_NAME" | cut -d "=" -f 2- | sed 's/"//g'`
 Kernel     `uname -sr`
 
-Hostname   `hostname` : $W`hostname -i`
+Hostname   `hostname` : `hostname -i`
 
 Uptime     `uptime -p`
 

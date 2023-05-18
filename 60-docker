@@ -14,7 +14,7 @@ for i in "${!containers[@]}"; do
     IFS=" " read name status <<< ${containers[i]}
     # color green if service is active, else red
     if [[ "${status}" == "Up" ]]; then
-        out+="${name}:,${green}${status,,}${undim},"
+        out+="${name},${green}${status,,}${undim},"
     else
         out+="${name},${red}${status,,}${undim},"
     fi

@@ -94,6 +94,7 @@ printf "\nDocker status:\n"
 printf "$out" | column -ts $',' | sed -e 's/^/  /'
 printf "\n"
 
+else
 
 fi
 
@@ -103,8 +104,10 @@ fi
 #* PI-HOLE *
 #***********
 
-if which hihole >/dev/null; then
+if which pihole >/dev/null; then
 
 echo -e "`pihole -v`"
+
+else
 
 fi

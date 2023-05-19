@@ -96,6 +96,8 @@ printf "\n"
 
 else
 
+echo test
+
 fi
 
 
@@ -109,5 +111,7 @@ if which pihole >/dev/null; then
 echo -e "`pihole -v`"
 
 else
+
+echo test
 
 fi

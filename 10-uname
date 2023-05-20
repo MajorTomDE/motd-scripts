@@ -3,7 +3,7 @@ uname -snrvm
 
 echo ""
 
-if [$HOSTNAME == "proxmox"]; then
+if [ "$HOSTNAME" == "proxmox" ]; then
 
    /usr/bin/env figlet "SKYNET SERVER"
 

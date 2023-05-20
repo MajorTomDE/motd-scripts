@@ -3,6 +3,7 @@
 if which pihole >/dev/null; then
 
   echo "Pi-hole status:"
+  echo ""
   pihole -v
   printf "\n"
   pihole status

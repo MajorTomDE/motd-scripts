@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if which pihole >/dev/null; then
+
+  echo -e "`pihole -v`"
+
+fi

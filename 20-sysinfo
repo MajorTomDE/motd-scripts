@@ -1,10 +1,5 @@
 #!/bin/bash
 
-#***********
-#* SYSINFO *
-#***********
-
-
 # get load averages
 #IFS=" " read LOAD1 LOAD5 LOAD15 <<<$(cat /proc/loadavg | awk '{ print $1,$2,$3 }')
 # get free memory

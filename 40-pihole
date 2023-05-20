@@ -2,6 +2,10 @@
 
 if which pihole >/dev/null; then
 
-  echo -e "`pihole -v`"
+  echo "Pi-hole status:"
+  pihole -v
+  printf "\n"
+  pihole status
+  printf "\n"
 
 fi

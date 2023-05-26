@@ -34,7 +34,7 @@ function sec2time (){
 
 
 user=$(whoami)
-#ip=`ifconfig $(route | grep default | awk '{ print $8 }') | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
+# ip=`ifconfig $(route | grep default | awk '{ print $8 }') | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
 lastlog=`lastlog -u ${user} | grep -v Latest |  awk '{ printf $6" "$5" "$9" at "$7" from "$3 }'`
 distro=`cat /etc/*release | grep "PRETTY_NAME" | cut -d "=" -f 2- | sed 's/"//g'`
 kernel=`uname -sr`
@@ -42,7 +42,7 @@ updates=`apt-get -q -y --ignore-hold --allow-change-held-packages --allow-unauth
 
 hostinfo=`hostname -i`
 
-#uptime=`uptime | grep -ohe 'up .*' | sed 's/,/\ hours/g' | awk '{ printf $2" "$3 }'`
+# uptime=`uptime | grep -ohe 'up .*' | sed 's/,/\ hours/g' | awk '{ printf $2" "$3 }'`
 uptime="$(sec2time $(cut -d "." -f 1 /proc/uptime))"
 uptime="$uptime ($(date -d "@"$(grep btime /proc/stat | cut -d " " -f 2) +"%d-%m-%Y %H:%M:%S"))"
 

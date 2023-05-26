@@ -5,7 +5,8 @@ clear
 target_directory="/etc/update-motd.d"
 
 while true; do
-    echo "Please choose your option:"
+    /usr/bin/env figlet "MOTD Updater"
+    echo ""
     echo "1. uname & sysinfo"
     echo "2. pihole"
     echo "3. docker"

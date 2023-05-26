@@ -10,8 +10,9 @@ while true; do
     echo "1. uname & sysinfo"
     echo "2. pihole"
     echo "3. docker"
-    echo "4. Skript beenden"
-    read -p "Choose option (1-4): " option
+    echo "4. Exit"
+    echo ""
+    read -p "Choose an option (1-4) and press enter: " option
 
     case $option in
         1)

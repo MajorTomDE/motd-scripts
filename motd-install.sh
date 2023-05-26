@@ -2,6 +2,10 @@
 
 clear
 
+#!/bin/bash
+
+target_directory="/pfad/zum/zielverzeichnis"
+
 while true; do
     echo "Bitte wählen Sie eine Option:"
     echo "1. File A herunterladen"
@@ -13,17 +17,17 @@ while true; do
     case $option in
         1)
             echo "Lade File A herunter..."
-            wget -O file_a.txt <URL zum File A>
+            wget -O "$target_directory/file_a.txt" <URL zum File A>
             echo "Download von File A abgeschlossen."
             ;;
         2)
             echo "Lade File B herunter..."
-            wget -O file_b.txt <URL zum File B>
+            wget -O "$target_directory/file_b.txt" <URL zum File B>
             echo "Download von File B abgeschlossen."
             ;;
         3)
             echo "Lade File C herunter..."
-            wget -O file_c.txt <URL zum File C>
+            wget -O "$target_directory/file_c.txt" <URL zum File C>
             echo "Download von File C abgeschlossen."
             ;;
         4)

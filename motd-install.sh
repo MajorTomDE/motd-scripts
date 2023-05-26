@@ -15,8 +15,8 @@ while true; do
     case $option in
         1)
             echo "Lade File A herunter..."
-            curl -o "$target_directory/10_uname" https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/10-uname
-            curl -o "$target_directory/20_sysinfo" https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/20-sysinfo
+            curl -o "$target_directory/10-uname" https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/10-uname
+            curl -o "$target_directory/20-sysinfo" https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/20-sysinfo
             echo "Download von File A abgeschlossen."
             ;;
         2)

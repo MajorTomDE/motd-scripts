@@ -15,17 +15,17 @@ while true; do
     case $option in
         1)
             echo "Lade File A herunter..."
-            wget -O "$target_directory/file_a.txt" <URL zum File A>
+            curl -o "$target_directory/file_a.txt" <URL zum File A>
             echo "Download von File A abgeschlossen."
             ;;
         2)
             echo "Lade File B herunter..."
-            wget -O "$target_directory/file_b.txt" <URL zum File B>
+            curl -o "$target_directory/file_b.txt" <URL zum File B>
             echo "Download von File B abgeschlossen."
             ;;
         3)
             echo "Lade File C herunter..."
-            wget -O "$target_directory/file_c.txt" <URL zum File C>
+            curl -o "$target_directory/file_c.txt" <URL zum File C>
             echo "Download von File C abgeschlossen."
             ;;
         4)

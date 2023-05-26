@@ -1,9 +1,9 @@
 #!/bin/bash
-uname -snrvm
 
-echo ""
+#uname -a
+#echo ""
 
-if [ "$HOSTNAME" == "proxmox" ]; then
+if [ "$HOSTNAME"  == "proxmox" ]; then
 
    /usr/bin/env figlet "SKYNET SERVER"
 
@@ -12,3 +12,5 @@ else
    /usr/bin/env figlet "$(hostname)"
 
 fi
+
+#echo ""

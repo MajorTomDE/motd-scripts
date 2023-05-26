@@ -6,26 +6,27 @@ target_directory="/etc/update-motd.d"
 
 while true; do
     echo "Bitte wählen Sie eine Option:"
-    echo "1. File A herunterladen"
-    echo "2. File B herunterladen"
-    echo "3. File C herunterladen"
+    echo "1. uname & sysinfo"
+    echo "2. pihole"
+    echo "3. docker"
     echo "4. Skript beenden"
     read -p "Option auswählen (1-4): " option
 
     case $option in
         1)
             echo "Lade File A herunter..."
-            curl -o "$target_directory/file_a.txt" <URL zum File A>
+            curl -o "$target_directory/10_uname" https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/10-uname
+            curl -o "$target_directory/20_sysinfo" https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/20-sysinfo
             echo "Download von File A abgeschlossen."
             ;;
         2)
             echo "Lade File B herunter..."
-            curl -o "$target_directory/file_b.txt" <URL zum File B>
+            curl -o "$target_directory/30-docker" https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/30-docker
             echo "Download von File B abgeschlossen."
             ;;
         3)
             echo "Lade File C herunter..."
-            curl -o "$target_directory/file_c.txt" <URL zum File C>
+            curl -o "$target_directory/40-pihole" https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/40-docker
             echo "Download von File C abgeschlossen."
             ;;
         4)

@@ -2,9 +2,7 @@
 
 clear
 
-#!/bin/bash
-
-target_directory="/pfad/zum/zielverzeichnis"
+target_directory="/etc/update-motd.d"
 
 while true; do
     echo "Bitte wählen Sie eine Option:"

@@ -5,12 +5,12 @@ clear
 target_directory="/etc/update-motd.d"
 
 while true; do
-    echo "Bitte wählen Sie eine Option:"
+    echo "Please choose your option:"
     echo "1. uname & sysinfo"
     echo "2. pihole"
     echo "3. docker"
     echo "4. Skript beenden"
-    read -p "Option auswählen (1-4): " option
+    read -p "Choose option (1-4): " option
 
     case $option in
         1)
@@ -34,7 +34,7 @@ while true; do
             exit 0
             ;;
         *)
-            echo "Ungültige Option ausgewählt."
+            echo "Invalid option."
             ;;
     esac
 

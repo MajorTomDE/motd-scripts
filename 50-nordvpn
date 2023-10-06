@@ -1,11 +1,9 @@
 #!/bin/bash
 
-output1=$(nordvpn status)
-output2=$(nordvpn settings | grep -e '^Meshnet' -e '^DNS')
+output1=$(sudo nordvpn status)
+output2=$(sudo nordvpn settings | grep -e '^Meshnet' -e '^DNS')
 
 echo -e "
-NordVPN:
-********
 $output1
 $output2
 "

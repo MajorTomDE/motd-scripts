@@ -1,3 +1,5 @@
+#!/bin/bash
+
 output1=$(nordvpn status)
 output2=$(nordvpn settings | grep -e '^Meshnet' -e '^DNS')
 

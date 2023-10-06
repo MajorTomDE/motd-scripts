@@ -40,7 +40,7 @@ while true; do
         4)
             echo "Lade File C herunter..."
             curl -o "$target_directory/50-nordvpn" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/50-nordvpn
-            chmod +x "$target_directory/50-nordvpn""
+            chmod +x "$target_directory/50-nordvpn"
             echo "Download von File C abgeschlossen."
             ;;
         9)

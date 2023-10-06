@@ -1,9 +1,15 @@
 #!/bin/bash
 
 output1=$(sudo nordvpn status)
-output2=$(sudo nordvpn settings | grep -e '^Meshnet' -e '^DNS')
+output1a=$(echo "$output1" | sed 's/:[[:space:]]*/:       /')
 
-echo -e "
-$output1
-$output2
-"
+output2=$(sudo nordvpn settings | grep -e '^Meshnet')
+output2a=$(echo "$output2" | sed 's/:[[:space:]]*/:      /')
+
+output3=$(sudo nordvpn settings | grep -e '^DNS')
+output3a=$(echo "$output3" | sed 's/:[[:space:]]*/:          /')
+
+
+echo -e "$output1a
+$output2a
+$output3a"

@@ -10,6 +10,7 @@ while true; do
     echo "1. uname & sysinfo"
     echo "2. pihole"
     echo "3. docker"
+    echo "4. NordVPN"
     echo "9. Test"
     echo "0. Exit"
     echo ""
@@ -34,6 +35,12 @@ while true; do
             echo "Lade File C herunter..."
             curl -o "$target_directory/40-pihole" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/40-docker
             chmod +x "$target_directory/40-docker"
+            echo "Download von File C abgeschlossen."
+            ;;
+        4)
+            echo "Lade File C herunter..."
+            curl -o "$target_directory/50-nordvpn" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/50-nordvpn
+            chmod +x "$target_directory/50-nordvpn""
             echo "Download von File C abgeschlossen."
             ;;
         9)

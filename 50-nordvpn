@@ -1,8 +1,9 @@
-output=$(NordVPN meshnet | grep -e '^Meshnet' -e '^DNS')
+output1=$(nordvpn status)
+output2=$(nordvpn settings | grep -e '^Meshnet' -e '^DNS')
 
 echo -e "
-NordVPN Status:
-***************
-
-$output
+NordVPN:
+********
+$output1
+$output2
 "

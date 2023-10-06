@@ -12,4 +12,6 @@ output3a=$(echo "$output3" | sed 's/:[[:space:]]*/:          /')
 
 echo -e "$output1a
 $output2a
-$output3a"
+$output3a
+
+"

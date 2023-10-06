@@ -11,6 +11,7 @@ while true; do
     echo "2. pihole"
     echo "3. docker"
     echo "4. NordVPN"
+    echo "8. Disable Last Logon Message"
     echo "9. Test"
     echo "0. Exit"
     echo ""
@@ -42,6 +43,11 @@ while true; do
             curl -o "$target_directory/50-nordvpn" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/50-nordvpn
             chmod +x "$target_directory/50-nordvpn"
             echo "Download von File C abgeschlossen."
+            ;;
+        8)
+            sudo sed -i 's/^#PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config
+            sudo sed -i 's/^PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config
+            service ssh restart
             ;;
         9)
             clear

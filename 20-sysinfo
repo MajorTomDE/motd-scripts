@@ -62,5 +62,4 @@ Updates       $G$updates$W
 "
 if [ -f /var/run/reboot-required ]; then
 	echo "*** System restart required ***"
-        cat /var/run/reboot-required.pkgs
 fi

@@ -10,9 +10,10 @@ while true; do
     echo "1. uname & sysinfo"
     echo "2. pihole"
     echo "3. docker"
-    echo "4. Exit"
+    echo "9. Test"
+    echo "0. Exit"
     echo ""
-    read -p "Choose an option (1-4) and press enter: " option
+    read -p "Choose an option and press enter: " option
 
     case $option in
         1)
@@ -35,7 +36,11 @@ while true; do
             chmod +x "$target_directory/40-docker"
             echo "Download von File C abgeschlossen."
             ;;
-        4)
+        9)
+            clear
+            sudo run-parts /etc/update-motd.d
+            ;;
+        0)
             echo "Das Skript wird beendet."
             exit 0
             ;;

@@ -12,7 +12,7 @@ while true; do
     echo "3. docker"
     echo "4. NordVPN"
     echo "8. Disable Last Logon Message"
-    echo "t.  Test"
+    echo "t. Test"
     echo "e. Exit"
     echo ""
     read -p "Choose an option and press enter: " option

@@ -52,6 +52,7 @@ while true; do
         9)
             clear
             sudo run-parts /etc/update-motd.d
+            read -p "Press enter to continue"
             ;;
         0)
             echo "Das Skript wird beendet."

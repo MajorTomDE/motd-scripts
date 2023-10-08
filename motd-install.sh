@@ -12,8 +12,8 @@ while true; do
     echo "3. docker"
     echo "4. NordVPN"
     echo "8. Disable Last Logon Message"
-    echo "T. Test"
-    echo "E. Exit"
+    echo "t.  Test"
+    echo "e. Exit"
     echo ""
     read -p "Choose an option and press enter: " option
 
@@ -49,12 +49,13 @@ while true; do
             sudo sed -i 's/^PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config
             service ssh restart
             ;;
-        T)
+        t)
             clear
             sudo run-parts /etc/update-motd.d
             read -p "Press enter to continue"
+            clear
             ;;
-        E)
+        e)
             echo "Das Skript wird beendet."
             exit 0
             ;;

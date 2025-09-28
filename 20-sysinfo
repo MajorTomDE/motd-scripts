@@ -22,7 +22,13 @@ sec2time () {
   fi
 }
 
-user="$(whoami)"
+
+if [ -n "$SUDO_USER" ]; then
+  user="$SUDO_USER"
+else
+  user="$(whoami)"
+fi
+
 
 # Last login (robust, inkl. "Never logged in")
 lastlog_raw="$(lastlog -u "$(whoami)" | tail -n +2)"

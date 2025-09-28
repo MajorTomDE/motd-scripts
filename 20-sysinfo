@@ -24,23 +24,6 @@ sec2time () {
 
 
 
-if [ -n "$PAM_USER" ]; then
-  login_user="$PAM_USER"
-else
-  login_user=$(who | awk 'NR==1{print $1}')
-fi
-
-
-
-# Last login (robust, inkl. "Never logged in")
-lastlog_raw="$(lastlog -u "$(whoami)" | tail -n +2)"
-if echo "$lastlog_raw" | grep -qi "never"; then
-  lastlog="Never logged in"
-else
-  # Beispielausgabe: username  pts/0 1.2.3.4  Mon Sep 29 10:42:31 +0200 2025
-  # Wir nehmen Host/TTY und Datum ab Spalte 3
-  lastlog="$(echo "$lastlog_raw" | awk '{host=$3; $1=$2=$3=""; sub(/^ +/,""); print $0 " from " host}')"
-fi
 
 # Distro
 if [ -r /etc/os-release ]; then
@@ -78,8 +61,6 @@ Kernel...........: ${kernel}
 
 Hostname.........: ${hostnametxt} | ${hostnameext}
 
-User.............: ${login_user}
-Last Login.......: ${lastlog}
 Uptime...........: ${uptime}
 
 Updates..........: ${G}${updates}${W}

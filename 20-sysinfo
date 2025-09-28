@@ -23,11 +23,9 @@ sec2time () {
 }
 
 
-if [ -n "$SUDO_USER" ]; then
-  user="$SUDO_USER"
-else
-  user="$(whoami)"
-fi
+
+  user="${SUDO_USER:-$LOGNAME}"
+
 
 
 # Last login (robust, inkl. "Never logged in")

@@ -1,66 +1,80 @@
 #!/bin/bash
+set -o nounset
+set -o pipefail
 
-function sec2time (){
-  local input=$1
-
-  if [ $input -lt 60 ]; then
-    echo "$input seconds"
+sec2time () {
+  local input=${1:-0}
+  if (( input < 60 )); then
+    echo "${input} seconds"
   else
-    ((days=input/86400))
-    ((input=input%86400))
-    ((hours=input/3600))
-    ((input=input%3600))
-    ((mins=input/60))
+    local days=$(( input/86400 ))
+    input=$(( input%86400 ))
+    local hours=$(( input/3600 ))
+    input=$(( input%3600 ))
+    local mins=$(( input/60 ))
 
-    local daysPlural="s"
-    local hoursPlural="s"
-    local minsPlural="s"
+    local dS="s" hS="s" mS="s"
+    (( days == 1 )) && dS=""
+    (( hours == 1 )) && hS=""
+    (( mins == 1 )) && mS=""
 
-    if [ $days -eq 1 ]; then
-      daysPlural=""
-    fi
-
-    if [ $hours -eq 1 ]; then
-      hoursPlural=""
-    fi
-
-    if [ $mins -eq 1 ]; then
-      minsPlural=""
-    fi
-
-    echo "$days day$daysPlural, $hours hour$hoursPlural, $mins minute$minsPlural"
+    echo "${days} day${dS}, ${hours} hour${hS}, ${mins} minute${mS}"
   fi
 }
 
+user="$(whoami)"
 
-user=$(whoami)
-# ip=`ifconfig $(route | grep default | awk '{ print $8 }') | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
-lastlog=`lastlog -u ${user} | grep -v Latest |  awk '{ printf $6" "$5" "$9" at "$7" from "$3 }'`
-distro=`cat /etc/*release | grep "PRETTY_NAME" | cut -d "=" -f 2- | sed 's/"//g'`
-kernel=`uname -sr`
-updates=`apt-get -q -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | /bin/grep  ^Inst | wc -l`
+# Last login (robust, inkl. "Never logged in")
+lastlog_raw="$(lastlog -u "$user" | tail -n +2)"
+if echo "$lastlog_raw" | grep -qi "never"; then
+  lastlog="Never logged in"
+else
+  # Beispielausgabe: username  pts/0 1.2.3.4  Mon Sep 29 10:42:31 +0200 2025
+  # Wir nehmen Host/TTY und Datum ab Spalte 3
+  lastlog="$(echo "$lastlog_raw" | awk '{host=$3; $1=$2=$3=""; sub(/^ +/,""); print $0 " from " host}')"
+fi
 
-hostnametxt=`hostname`
-hostnameext= `curl -s ifconfig.me`
+# Distro
+if [ -r /etc/os-release ]; then
+  distro="$(. /etc/os-release; echo "${PRETTY_NAME}")"
+else
+  distro="$(uname -s)"
+fi
 
-# uptime=`uptime | grep -ohe 'up .*' | sed 's/,/\ hours/g' | awk '{ printf $2" "$3 }'`
-uptime="$(sec2time $(cut -d "." -f 1 /proc/uptime))"
-uptime="$uptime ($(date -d "@"$(grep btime /proc/stat | cut -d " " -f 2) +"%d-%m-%Y %H:%M:%S"))"
+kernel="$(uname -sr)"
+
+# Updates: schneller, ohne Locks, mit Timeout
+# Hinweis: Zählt nur Zeilen die mit "Inst " beginnen (simuliertes Upgrade)
+updates="$(
+  timeout 3s apt-get -o Debug::NoLocking=1 -q -s upgrade 2>/dev/null | grep -c '^Inst ' || echo 0
+)"
+
+hostnametxt="$(hostname)"
+
+# Öffentliche IP (mit Timeout & Fallback-Text)
+hostnameext="$(curl -s --max-time 2 ifconfig.me || true)"
+[ -z "$hostnameext" ] && hostnameext="(no external IP)"
+
+# Uptime + Boot-Time
+uptime="$(sec2time "$(cut -d '.' -f 1 /proc/uptime)")"
+boottime="$(date -d "@$(grep btime /proc/stat | awk '{print $2}')" +"%d-%m-%Y %H:%M:%S")"
+uptime="${uptime} (${boottime})"
 
 W="\e[0;39m"
 G="\e[1;32m"
 
+# Ausgabe
 echo -e "
-Distro...........: $distro
-Kernel...........: $kernel
+Distro...........: ${distro}
+Kernel...........: ${kernel}
 
-Hostname.........: $hostnametxt | $hostnameext
+Hostname.........: ${hostnametxt} | ${hostnameext}
 
-Last Login.......: $lastlog
-Uptime...........: $uptime
+Last Login.......: ${lastlog}
+Uptime...........: ${uptime}
 
-Updates..........: $G$updates$W
+Updates..........: ${G}${updates}${W}
 "
 if [ -f /var/run/reboot-required ]; then
-	echo "*** System restart required ***"
+  echo "*** System restart required ***"
 fi

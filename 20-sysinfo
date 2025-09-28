@@ -70,6 +70,7 @@ Kernel...........: ${kernel}
 
 Hostname.........: ${hostnametxt} | ${hostnameext}
 
+User.............: ${user}
 Last Login.......: ${lastlog}
 Uptime...........: ${uptime}
 

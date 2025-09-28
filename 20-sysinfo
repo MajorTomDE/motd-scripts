@@ -24,7 +24,11 @@ sec2time () {
 
 
 
-  user="${SUDO_USER:-$LOGNAME}"
+if [ -n "$PAM_USER" ]; then
+  login_user="$PAM_USER"
+else
+  login_user=$(who | awk 'NR==1{print $1}')
+fi
 
 
 
@@ -74,7 +78,7 @@ Kernel...........: ${kernel}
 
 Hostname.........: ${hostnametxt} | ${hostnameext}
 
-User.............: ${user}
+User.............: ${login_user}
 Last Login.......: ${lastlog}
 Uptime...........: ${uptime}
 

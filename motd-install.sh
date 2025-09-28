@@ -19,6 +19,7 @@ while true; do
     case $option in
         1)
             echo "Lade File A herunter..."
+            sudo apt install figlet
             curl -o "$target_directory/10-uname" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/10-uname
             curl -o "$target_directory/20-sysinfo" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/20-sysinfo
             chmod +x "$target_directory/10-uname"

@@ -25,7 +25,7 @@ sec2time () {
 user="$(whoami)"
 
 # Last login (robust, inkl. "Never logged in")
-lastlog_raw="$(lastlog -u "$USER" | tail -n +2)"
+lastlog_raw="$(lastlog -u "$(whoami)" | tail -n +2)"
 if echo "$lastlog_raw" | grep -qi "never"; then
   lastlog="Never logged in"
 else

@@ -11,6 +11,7 @@ while true; do
     echo "2. pihole"
     echo "3. docker"
     echo "8. Disable Last Logon Message"
+    echo "9. Enable Last Logon Message"
     echo "t. Test motd"
     echo "e. Exit"
     echo ""
@@ -42,7 +43,13 @@ while true; do
             sudo sed -i 's/^#PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config
             sudo sed -i 's/^PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config
             service ssh restart
+            ;; 
+        9)
+            sudo sed -i 's/^#PrintLastLog no/PrintLastLog yes/' /etc/ssh/sshd_config
+            sudo sed -i 's/^PrintLastLog no/PrintLastLog yes/' /etc/ssh/sshd_config
+            service ssh restart
             ;;
+
         t)
             clear
             sudo run-parts /etc/update-motd.d

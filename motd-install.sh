@@ -20,21 +20,21 @@ while true; do
         1)
             echo "Lade File A herunter..."
             sudo apt install figlet
-            curl -o "$target_directory/10-uname" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/10-uname
-            curl -o "$target_directory/20-sysinfo" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/20-sysinfo
+            curl -s -o "$target_directory/10-uname" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/10-uname
+            curl -s -o "$target_directory/20-sysinfo" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/20-sysinfo
             chmod +x "$target_directory/10-uname"
             chmod +x "$target_directory/20-sysinfo"
             echo "Download von File A abgeschlossen."
             ;;
         2)
             echo "Lade File B herunter..."
-            curl -o "$target_directory/40-pihole" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/40-pihole
+            curl -s -o "$target_directory/40-pihole" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/40-pihole
             chmod +x "$target_directory/40-pihole"
             echo "Download von File B abgeschlossen."
             ;;
         3)
             echo "Lade File C herunter..."
-            curl -o "$target_directory/30-docker" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/30-docker
+            curl -s -o "$target_directory/30-docker" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/30-docker
             chmod +x "$target_directory/30-docker"
             echo "Download von File C abgeschlossen."
             ;;

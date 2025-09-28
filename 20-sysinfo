@@ -46,7 +46,7 @@ kernel="$(uname -sr)"
 # Updates: schneller, ohne Locks, mit Timeout
 # Hinweis: Zählt nur Zeilen die mit "Inst " beginnen (simuliertes Upgrade)
 updates="$(
-  timeout 3s apt-get -o Debug::NoLocking=1 -q -s upgrade 2>/dev/null | grep -c '^Inst ' || echo 0
+  timeout 3s apt-get -o Debug::NoLocking=1 -q -s upgrade 2>/dev/null | grep -c '^Inst '
 )"
 
 hostnametxt="$(hostname)"

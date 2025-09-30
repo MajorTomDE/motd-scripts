@@ -56,14 +56,12 @@ G="\e[1;32m"
 
 # Ausgabe
 echo -e "
-Distro...........: ${distro}
-Kernel...........: ${kernel}
-
-Hostname.........: ${hostnametxt} | ${hostnameext}
-
-Uptime...........: ${uptime}
-
-Updates..........: ${G}${updates}${W}
+Server
+  Distro...........: ${distro}
+  Kernel...........: ${kernel}
+  Hostname.........: ${hostnametxt} | ${hostnameext}
+  Uptime...........: ${uptime}
+  Updates..........: ${G}${updates}${W}
 "
 if [ -f /var/run/reboot-required ]; then
   echo "*** System restart required ***"

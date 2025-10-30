@@ -125,13 +125,35 @@ fi
 
 # *** PIHOLE ****
 
-if which pihole >/dev/null; then
-  
-  echo "Pi-hole status:"
-  echo ""
-  pihole -v
-  printf "\n"
-  pihole status
-  printf "\n"
-
+if ! command -v pihole >/dev/null 2>&1; then
+    exit 0
 fi
+
+# Farben
+green="\e[1;32m"
+red="\e[1;31m"
+yellow="\e[1;33m"
+undim="\e[0m"
+
+# Status prüfen (Dienst aktiv?)
+if systemctl is-active --quiet pihole-FTL; then
+    status="${green}active${undim}"
+else
+    status="${red}inactive${undim}"
+fi
+
+# Update prüfen
+# „pihole -up“ zeigt Updates an, aber wir wollen das non-interaktiv checken:
+update_status=$(pihole -up --check 2>/dev/null)
+
+if echo "$update_status" | grep -q "Everything is up to date"; then
+    update="${green}up-to-date${undim}"
+else
+    update="${yellow}available${undim}"
+fi
+
+# Anzeige
+echo
+echo -e "📡 Pi-hole Status:   $status"
+echo -e "⬆️  Update:          $update"
+echo

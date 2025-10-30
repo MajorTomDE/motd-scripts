@@ -125,37 +125,67 @@ fi
 
 # *** PIHOLE ****
 
-if ! command -v pihole >/dev/null 2>&1; then
-    exit 0
-fi
+
+
+if command -v pihole >/dev/null 2>&1; then
 
 # Farben
-green="\e[1;32m"
-red="\e[1;31m"
-yellow="\e[1;33m"
-undim="\e[0m"
+green="\e[1;32m"; red="\e[1;31m"; yellow="\e[1;33m"; reset="\e[0m"
 
-# Status prüfen (Dienst aktiv?)
-if systemctl is-active --quiet pihole-FTL; then
-    status="${green}active${undim}"
+# --- Status (FTL/Blocking) ---
+status_out=$(timeout 2s pihole status 2>/dev/null)
+if printf '%s' "$status_out" | grep -qiE 'running|active'; then
+  svc="${green}active${reset}"
 else
-    status="${red}inactive${undim}"
+  svc="${red}inactive${reset}"
+fi
+if printf '%s' "$status_out" | grep -qi 'blocking.*enabled'; then
+  block="enabled"
+elif printf '%s' "$status_out" | grep -qi 'blocking.*disabled'; then
+  block="disabled"
+else
+  block="unknown"
 fi
 
-# Update prüfen
-# „pihole -up“ zeigt Updates an, aber wir wollen das non-interaktiv checken:
-update_status=$(pihole -up --check 2>/dev/null)
+# --- Update-Check via `pihole -v` (ohne --check) ---
+ver_out=$(timeout 4s pihole -v 2>/dev/null)
 
-if echo "$update_status" | grep -q "Everything is up to date"; then
-    update="${green}up-to-date${undim}"
-else
-    update="${yellow}available${undim}"
+update_state="unknown"
+if [[ -n "$ver_out" ]]; then
+  # Wenn "(Latest: ...)" vorkommt, prüfen wir pro Zeile, ob etwas neuer ist
+  if printf '%s' "$ver_out" | grep -q 'Latest:'; then
+    need_update=0
+    while IFS= read -r line; do
+      # installiert
+      inst=$(printf '%s' "$line" | sed -n 's/.* is \([^ ]*\).*/\1/p')
+      # latest (falls vorhanden)
+      last=$(printf '%s' "$line" | sed -n 's/.*Latest: \([^)]*\)).*/\1/p')
+      if [[ -n "$last" && -n "$inst" && "$last" != "$inst" ]]; then
+        need_update=1
+        break
+      fi
+    done <<< "$(printf '%s' "$ver_out")"
+    if (( need_update )); then
+      update_state="available"
+    else
+      update_state="up-to-date"
+    fi
+  else
+    # Keine Latest-Info im Output -> wir wissen es nicht sicher
+    update_state="unknown"
+  fi
 fi
+
+# Farbig formatieren
+case "$update_state" in
+  up-to-date) upd="${green}up-to-date${reset}" ;;
+  available)  upd="${yellow}available${reset}" ;;
+  *)          upd="${yellow}unknown${reset}" ;;
+esac
 
 # Anzeige
-echo
-echo -e "Pi-hole Status"
-echo -e "  Status:              $status"
-echo -e "  Update:              $update"
-echo
+printf "\nPi-hole Status\n"
+printf "  Service:             %b (blocking: %s)\n" "$svc" "$block"
+printf "  Update:              %b\n\n" "$upd"
 
+fi

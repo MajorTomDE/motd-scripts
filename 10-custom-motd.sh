@@ -59,7 +59,6 @@ G="\e[1;32m"
 
 
 # Ausgabe
-uname -snrvm
 /usr/bin/env figlet "$(hostname)"
 echo -e "
 Server
@@ -77,34 +76,50 @@ fi
 # *** DOCKER ***
 
 if command -v docker >/dev/null 2>&1; then
-  # eigene Spalten-Anzahl, nicht COLUMNS!
-  COLS=2
-  # colors
+  # Farben
   green="\e[1;32m"
   red="\e[1;31m"
   undim="\e[0m"
 
-  mapfile -t containers < <(docker ps -a --format '{{.Names}}\t{{.Status}}' \
-    | sort -k1,1 | awk '{ print $1,$2 }')
+  # Containername + Status sammeln
+  mapfile -t names   < <(docker ps -a --format '{{.Names}}'   | sort -k1,1)
+  mapfile -t status  < <(docker ps -a --format '{{.Status}}'  | sort -k1,1 | awk '{print $1}')
 
-  out=""
-  for i in "${!containers[@]}"; do
-    IFS=' ' read -r name status <<< "${containers[i]}"
-    if [[ "$status" == "Up" ]]; then
-      out+="${name},${green}${status,,}${undim},"
-    else
-      out+="${name},${red}${status,,}${undim},"
-    fi
-    if (( ((i+1) % COLS) == 0 )); then
-      out+="\n"
-    fi
-  done
-  out+="\n"
+  count=${#names[@]}
+  half=$(( (count + 1) / 2 ))   # bei ungerader Zahl eine Zeile mehr links
 
   printf "\nDocker status:\n"
-  printf "%b" "$out" | awk -F, '{printf "  %-25s %-12s\n",$1,$2}'
-  printf "\n"
+
+  for ((i=0; i<half; i++)); do
+      # linke Spalte
+      n1="${names[i]}"
+      s1="${status[i]}"
+      if [[ "$s1" == "Up" ]]; then
+          s1_col="${green}${s1,,}${undim}"
+      else
+          s1_col="${red}${s1,,}${undim}"
+      fi
+
+      # rechte Spalte (wenn vorhanden)
+      idx2=$((i+half))
+      if (( idx2 < count )); then
+          n2="${names[idx2]}"
+          s2="${status[idx2]}"
+          if [[ "$s2" == "Up" ]]; then
+              s2_col="${green}${s2,,}${undim}"
+          else
+              s2_col="${red}${s2,,}${undim}"
+          fi
+          printf "  %-20s %-12b   %-20s %-12b\n" "$n1" "$s1_col" "$n2" "$s2_col"
+      else
+          # falls keine rechte Spalte mehr
+          printf "  %-20s %-12b\n" "$n1" "$s1_col"
+      fi
+  done
+
+  echo
 fi
+
 
 
 

@@ -76,40 +76,36 @@ fi
 
 # *** DOCKER ***
 
-if which docker >/dev/null; then
+if command -v docker >/dev/null 2>&1; then
+  # eigene Spalten-Anzahl, nicht COLUMNS!
+  COLS=2
+  # colors
+  green="\e[1;32m"
+  red="\e[1;31m"
+  undim="\e[0m"
 
-# set column width
-COLUMNS=2
-# colors
-green="\e[1;32m"
-red="\e[1;31m"
-undim="\e[0m"
+  mapfile -t containers < <(docker ps -a --format '{{.Names}}\t{{.Status}}' \
+    | sort -k1,1 | awk '{ print $1,$2 }')
 
-mapfile -t containers < <(docker ps -a --format '{{.Names}}\t{{.Status}}' | sort -k1 | awk '{ print $1,$2 }')
-
-out=""
-for i in "${!containers[@]}"; do
-    IFS=" " read name status <<< ${containers[i]}
-    # color green if service is active, else red
-    if [[ "${status}" == "Up" ]]; then
-        out+="${name},${green}${status,,}${undim},"
+  out=""
+  for i in "${!containers[@]}"; do
+    IFS=' ' read -r name status <<< "${containers[i]}"
+    if [[ "$status" == "Up" ]]; then
+      out+="${name},${green}${status,,}${undim},"
     else
-        out+="${name},${red}${status,,}${undim},"
+      out+="${name},${red}${status,,}${undim},"
     fi
-    # insert \n every $COLUMNS column
-    if [ $((($i+1) % $COLUMNS)) -eq 0 ]; then
-        out+="\n"
+    if (( ((i+1) % COLS) == 0 )); then
+      out+="\n"
     fi
-done
+  done
+  out+="\n"
 
-out+="\n"
-
-printf "\nDocker status:\n"
-printf "$out" | column -ts $',' | sed -e 's/^/  /'
-printf "\n"
-
-
+  printf "\nDocker status:\n"
+  printf "%b" "$out" | column -t -s ',' | sed -e 's/^/  /'
+  printf "\n"
 fi
+
 
 
 # *** PIHOLE ****

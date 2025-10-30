@@ -7,6 +7,7 @@ target_directory="/etc/update-motd.d"
 while true; do
     /usr/bin/env figlet "MOTD Updater"
     echo ""
+    echo "0. Combined MotD"
     echo "1. uname & sysinfo"
     echo "2. pihole"
     echo "3. docker"
@@ -18,6 +19,14 @@ while true; do
     read -p "Choose an option and press enter: " option
 
     case $option in
+        0)
+            echo "Lade File 0 herunter..."
+            curl -s -o "$target_directory/40-pihole" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/10-custom-motd.sh
+            chmod +x "$target_directory/10-custom-motd.sh"
+            echo "Download von File B abgeschlossen."
+            ;;
+        
+        
         1)
             echo "Lade File A herunter..."
             sudo apt install figlet

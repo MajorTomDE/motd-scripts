@@ -88,7 +88,7 @@ if command -v docker >/dev/null 2>&1; then
   count=${#names[@]}
   half=$(( (count + 1) / 2 ))   # bei ungerader Zahl eine Zeile mehr links
 
-  printf "\nDocker status:\n"
+  printf "\nDocker status\n"
 
   for ((i=0; i<half; i++)); do
       # linke Spalte
@@ -154,6 +154,8 @@ fi
 
 # Anzeige
 echo
-echo -e "📡 Pi-hole Status:   $status"
-echo -e "⬆️  Update:          $update"
+echo -e "Pi-hole Status"
+echo -e "  Status:              $status"
+echo -e "  Update:              $update"
 echo
+

@@ -102,7 +102,7 @@ if command -v docker >/dev/null 2>&1; then
   out+="\n"
 
   printf "\nDocker status:\n"
-  printf "%b" "$out" | awk -F, '{printf "  %-25s %-12s\n",$1,$2}'
+  #printf "%b" "$out" | awk -F, '{printf "  %-25s %-12s\n",$1,$2}'
   printf "\n"
 fi
 

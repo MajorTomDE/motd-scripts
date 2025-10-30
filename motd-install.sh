@@ -21,9 +21,9 @@ while true; do
     case $option in
         0)
             echo "Lade File 0 herunter..."
-            curl -s -o "$target_directory/40-pihole" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/10-custom-motd.sh
-            chmod +x "$target_directory/10-custom-motd.sh"
-            echo "Download von File B abgeschlossen."
+            curl -s -o "/etc/profile.d/10-custom-motd.sh" -f https://raw.githubusercontent.com/MajorTomDE/motd-scripts/main/10-custom-motd.sh
+            chmod +x "/etc/profile.d/10-custom-motd.sh"
+            echo "Download von File 0 abgeschlossen."
             ;;
         
         

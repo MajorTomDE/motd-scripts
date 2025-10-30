@@ -132,58 +132,56 @@ if command -v pihole >/dev/null 2>&1; then
 # Farben
 green="\e[1;32m"; red="\e[1;31m"; yellow="\e[1;33m"; reset="\e[0m"
 
-# --- Status (FTL/Blocking) ---
-status_out=$(timeout 2s pihole status 2>/dev/null)
-if printf '%s' "$status_out" | grep -qiE 'running|active'; then
+# --- Status (FTL / Blocking) ---
+status_out=$(LC_ALL=C timeout 2s pihole status 2>/dev/null)
+
+# FTL aktiv, wenn "FTL is listening on port 53" vorkommt
+if printf '%s\n' "$status_out" | grep -q "FTL is listening on port 53"; then
   svc="${green}active${reset}"
 else
   svc="${red}inactive${reset}"
 fi
-if printf '%s' "$status_out" | grep -qi 'blocking.*enabled'; then
+
+# Blocking enabled/disabled auslesen (genaue Textteile)
+if printf '%s\n' "$status_out" | grep -q "Pi-hole blocking is enabled"; then
   block="enabled"
-elif printf '%s' "$status_out" | grep -qi 'blocking.*disabled'; then
+elif printf '%s\n' "$status_out" | grep -q "Pi-hole blocking is disabled"; then
   block="disabled"
 else
   block="unknown"
 fi
 
-# --- Update-Check via `pihole -v` (ohne --check) ---
-ver_out=$(timeout 4s pihole -v 2>/dev/null)
+# --- Update-Check via `pihole -v` (ohne Netz-Fetch) ---
+ver_out=$(LC_ALL=C timeout 4s pihole -v 2>/dev/null)
 
-update_state="unknown"
+upd_state="unknown"
 if [[ -n "$ver_out" ]]; then
-  # Wenn "(Latest: ...)" vorkommt, prüfen wir pro Zeile, ob etwas neuer ist
-  if printf '%s' "$ver_out" | grep -q 'Latest:'; then
-    need_update=0
-    while IFS= read -r line; do
-      # installiert
-      inst=$(printf '%s' "$line" | sed -n 's/.* is \([^ ]*\).*/\1/p')
-      # latest (falls vorhanden)
-      last=$(printf '%s' "$line" | sed -n 's/.*Latest: \([^)]*\)).*/\1/p')
-      if [[ -n "$last" && -n "$inst" && "$last" != "$inst" ]]; then
-        need_update=1
-        break
-      fi
-    done <<< "$(printf '%s' "$ver_out")"
-    if (( need_update )); then
-      update_state="available"
-    else
-      update_state="up-to-date"
+  # „Latest:“ wird pro Zeile eingeblendet, wenn Vergleich möglich ist
+  need_update=0
+  while IFS= read -r line; do
+    inst=$(printf '%s' "$line" | sed -n 's/.* is \([^ ]*\).*/\1/p')
+    last=$(printf '%s' "$line" | sed -n 's/.*Latest: \([^)]*\)).*/\1/p')
+    if [[ -n "$last" && -n "$inst" && "$last" != "$inst" ]]; then
+      need_update=1; break
     fi
+  done <<< "$ver_out"
+  if (( need_update )); then
+    upd_state="available"
   else
-    # Keine Latest-Info im Output -> wir wissen es nicht sicher
-    update_state="unknown"
+    # wenn Latest vorhanden und überall gleich, dann up-to-date
+    if printf '%s' "$ver_out" | grep -q "Latest:"; then
+      upd_state="up-to-date"
+    fi
   fi
 fi
 
-# Farbig formatieren
-case "$update_state" in
+case "$upd_state" in
   up-to-date) upd="${green}up-to-date${reset}" ;;
   available)  upd="${yellow}available${reset}" ;;
   *)          upd="${yellow}unknown${reset}" ;;
 esac
 
-# Anzeige
+# --- Ausgabe ---
 printf "\nPi-hole Status\n"
 printf "  Service:             %b (blocking: %s)\n" "$svc" "$block"
 printf "  Update:              %b\n\n" "$upd"

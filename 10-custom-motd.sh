@@ -35,12 +35,6 @@ fi
 
 kernel="$(uname -sr)"
 
-# Updates: schneller, ohne Locks, mit Timeout
-# Hinweis: Zählt nur Zeilen die mit "Inst " beginnen (simuliertes Upgrade)
-updates="$(
-  timeout 3s apt-get -o Debug::NoLocking=1 -q -s upgrade 2>/dev/null | grep -c '^Inst '
-)"
-
 hostnametxt="$(hostname)"
 
 # Öffentliche IP (mit Timeout & Fallback-Text)
@@ -66,7 +60,6 @@ Server
   Kernel...........: ${kernel}
   Hostname.........: ${hostnametxt} | ${hostnameext}
   Uptime...........: ${uptime}
-  Updates..........: ${G}${updates}${W}
 "
 if [ -f /var/run/reboot-required ]; then
   echo "*** System restart required ***"

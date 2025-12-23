@@ -33,18 +33,19 @@ else
   distro="$(uname -s)"
 fi
 
+# Kernel Version
 kernel="$(uname -sr)"
 
+# Hostname
 hostnametxt="$(hostname)"
 
-# Öffentliche IP (mit Timeout & Fallback-Text)
+# Public IP (with Timeout & Fallback-Text)
 hostnameext="$(curl -s --max-time 2 ifconfig.me || true)"
 [ -z "$hostnameext" ] && hostnameext="(no external IP)"
 
 # Uptime + Boot-Time
 uptime="$(sec2time "$(cut -d '.' -f 1 /proc/uptime)")"
 boottime="$(date -d "@$(grep btime /proc/stat | awk '{print $2}')" +"%d-%m-%Y %H:%M:%S")"
-uptime="${uptime} (${boottime})"
 
 W="\e[0;39m"
 G="\e[1;32m"
@@ -58,8 +59,9 @@ echo -e "
 Server
   Distro...........: ${distro}
   Kernel...........: ${kernel}
-  Hostname.........: ${hostnametxt} | ${hostnameext}
-  Uptime...........: ${uptime}
+  Hostname.........: ${hostnametxt}
+  External IP......: ${hostnameext}
+  Uptime...........: ${uptime} (${boottime})
 "
 if [ -f /var/run/reboot-required ]; then
   echo "*** System restart required ***"
@@ -116,9 +118,7 @@ fi
 
 
 
-# *** PIHOLE ****
-
-
+# *** Pi-Hole Status ****
 
 if command -v pihole >/dev/null 2>&1; then
 

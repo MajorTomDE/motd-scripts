@@ -79,7 +79,6 @@ if command -v docker >/dev/null 2>&1; then
   # Containername + Status sammeln
   mapfile -t names   < <(docker ps -a --format '{{.Names}}'   | sort -k1,1)
   mapfile -t status  < <(docker ps -a --format '{{.Status}}'  | sort -k1,1 | awk '{print $1}')
-\n
   count=${#names[@]}
   half=$(( (count + 1) / 2 ))   # bei ungerader Zahl eine Zeile mehr links
 

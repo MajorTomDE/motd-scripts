@@ -56,11 +56,11 @@ G="\e[1;32m"
 # Ausgabe
 /usr/bin/env figlet "$(hostname)"
 echo -e "
-Server
+**Server**
   Distro...........: ${distro}
   Kernel...........: ${kernel}
   Hostname.........: ${hostnametxt}
-  External IP......: ${hostnameext}
+  Public IP........: ${hostnameext}
   Uptime...........: ${uptime} (${boottime})
 "
 if [ -f /var/run/reboot-required ]; then
@@ -79,11 +79,11 @@ if command -v docker >/dev/null 2>&1; then
   # Containername + Status sammeln
   mapfile -t names   < <(docker ps -a --format '{{.Names}}'   | sort -k1,1)
   mapfile -t status  < <(docker ps -a --format '{{.Status}}'  | sort -k1,1 | awk '{print $1}')
-
+\n
   count=${#names[@]}
   half=$(( (count + 1) / 2 ))   # bei ungerader Zahl eine Zeile mehr links
 
-  printf "\nDocker status\n"
+  printf "\n**Docker Status**\n"
 
   for ((i=0; i<half; i++)); do
       # linke Spalte
@@ -175,7 +175,7 @@ case "$upd_state" in
 esac
 
 # --- Ausgabe ---
-printf "\nPi-hole Status\n"
+printf "\n**Pi-hole Status**\n"
 printf "  Service:             %b (blocking: %s)\n" "$svc" "$block"
 printf "  Update:              %b\n\n" "$upd"
 

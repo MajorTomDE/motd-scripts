@@ -56,7 +56,7 @@ G="\e[1;32m"
 # Ausgabe
 /usr/bin/env figlet "$(hostname)"
 echo -e "
-**Server**
+Server
   Distro...........: ${distro}
   Kernel...........: ${kernel}
   Hostname.........: ${hostnametxt}
@@ -83,7 +83,7 @@ if command -v docker >/dev/null 2>&1; then
   count=${#names[@]}
   half=$(( (count + 1) / 2 ))   # bei ungerader Zahl eine Zeile mehr links
 
-  printf "\n**Docker Status**\n"
+  printf "\nDocker Status\n"
 
   for ((i=0; i<half; i++)); do
       # linke Spalte
@@ -175,7 +175,7 @@ case "$upd_state" in
 esac
 
 # --- Ausgabe ---
-printf "\n**Pi-hole Status**\n"
+printf "\nPi-hole Status\n"
 printf "  Service:             %b (blocking: %s)\n" "$svc" "$block"
 printf "  Update:              %b\n\n" "$upd"
 
